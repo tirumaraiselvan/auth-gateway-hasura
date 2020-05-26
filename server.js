@@ -45,7 +45,7 @@ app.get('/', (request, response) => {
         proxyInternalAuth(token, response);
         break;
     default:
-        response.status(400).json({"message": "x-solaire-app header not found"});
+        response.status(401).json({"message": "x-solaire-app header not found"});
     }
   }
 );
