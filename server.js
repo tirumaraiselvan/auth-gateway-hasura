@@ -12,7 +12,9 @@ var port = process.env.PORT || 3000;
    2) Fetches userInfo in a mock function
    3) Return hasura variables
 */
-function proxyExternalAuth (token, response) {
+function proxyExternalAuth (token, request, response) {
+    var token = request.get('Authorization');
+    console.log(token);
     // e.g. you might proxy to a webhook auth service and fwd the response
     requestClient('https://infinite-tor-17057.herokuapp.com/', function(error, authResp, body) {
         if (!error) {
@@ -24,7 +26,7 @@ function proxyExternalAuth (token, response) {
     });
 }
 
-function proxyInternalAuth (token, response) {
+function proxyInternalAuth (token, request, response) {
     // e.g. you might proxy to a jwt service or verify jwt token here
     var hasuraVariables = {
         'X-Hasura-Role': 'internal',  // result.role
@@ -34,15 +36,13 @@ function proxyInternalAuth (token, response) {
 }
 
 app.get('/', (request, response) => {
-  // Extract token from request
-    var token = request.get('Authorization');
     var appName = request.get('X-Solaire-App');
     switch(appName) {
     case "external":
-        proxyExternalAuth(token, response);
+        proxyExternalAuth(token, request, response);
         break;
     case "internal":
-        proxyInternalAuth(token, response);
+        proxyInternalAuth(token, request, response);
         break;
     default:
         response.status(401).json({"message": "x-solaire-app header not found"});
