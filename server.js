@@ -14,7 +14,7 @@ var port = process.env.PORT || 3000;
 */
 function proxyExternalAuth (token, response) {
     // e.g. you might proxy to a webhook auth service and fwd the response
-    requestClient('https://infinite-tor-17057.herokuapp.com/webhook', function(error, authResp, body) {
+    requestClient('https://infinite-tor-17057.herokuapp.com/', function(error, authResp, body) {
         if (!error) {
             response.status(authResp.statusCode).json(JSON.parse(body));
         }
