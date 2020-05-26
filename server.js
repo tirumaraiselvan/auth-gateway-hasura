@@ -12,7 +12,7 @@ var port = process.env.PORT || 3000;
    2) Fetches userInfo in a mock function
    3) Return hasura variables
 */
-function proxyExternalAuth (token, request, response) {
+function proxyExternalAuth (request, response) {
     var token = request.get('Authorization');
     console.log('Authorization: ' +  token);
     // e.g. you might proxy to a webhook auth service and fwd the response
@@ -40,10 +40,10 @@ app.get('/', (request, response) => {
     var appName = request.get('X-Solaire-App');
     switch(appName) {
     case "external":
-        proxyExternalAuth(token, request, response);
+        proxyExternalAuth(request, response);
         break;
     case "internal":
-        proxyInternalAuth(token, request, response);
+        proxyInternalAuth(request, response);
         break;
     default:
         response.status(401).json({"message": "x-solaire-app header not found"});
