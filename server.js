@@ -16,7 +16,8 @@ function proxyExternalAuth (request, response) {
     var token = request.get('Authorization');
     console.log('Authorization: ' +  token);
     // e.g. you might proxy to a webhook auth service and fwd the response
-    requestClient('https://infinite-tor-17057.herokuapp.com/', function(error, authResp, body) {
+    requestClient({ url: 'https://infinite-tor-17057.herokuapp.com/', 
+                    headers: {'Authorization': token}}, function(error, authResp, body) {
 	console.log(body);
         if (!error) {
             response.status(authResp.statusCode).json(JSON.parse(body));
