@@ -28,7 +28,7 @@ function proxyExternalAuth (request, response) {
     });
 }
 
-function proxyInternalAuth (token, request, response) {
+function proxyInternalAuth (request, response) {
     // e.g. you might proxy to a jwt service or verify jwt token here
     var hasuraVariables = {
         'X-Hasura-Role': 'internal',  // result.role
